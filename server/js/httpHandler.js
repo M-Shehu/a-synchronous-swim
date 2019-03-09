@@ -2,20 +2,23 @@ const fs = require('fs');
 const headers = require('./cors');
 const multipart = require('./multipartUtils');
 const messageQueue = require('./messageQueue');
-
+const httpHandler = require('./httpHandler');
+const path = require('path');
 // Path for the background image ///////////////////////
 module.exports.backgroundImageFile = './background.jpg';
 ////////////////////////////////////////////////////////
 var validMessages = ['left', 'right', 'up', 'down'];
 
 var random = (array) => {
-  return array[Math.floor(Math.random()* (array.length))]
+  return array[Math.floor(Math.random() * (array.length))]
 }
 
 module.exports.router = (req, res, next = ()=>{}) => {
   console.log('Serving request type ' + req.method + ' for url ' + req.url);
   res.writeHead(200, headers);
   
+  
+
   if (req.method === 'POST') {
     var messageFromClient = "";
     req.on('data', function(chunk) {
@@ -28,12 +31,32 @@ module.exports.router = (req, res, next = ()=>{}) => {
   }
 
   if (req.method === 'GET') {
-    res.write(random(validMessages).toString());
-    res.end();
+    if(req.url === "/background") {
+      var filePath = path.join(__dirname, "/background.jpg");
+      fs.exists(filePath, function(exists) {
+        if(exists) {
+          res.writeHead(200, headers);
+          fs.createReadStream(filePath).pipe(res);
+          console.log('Yay')
+          
+          res.end();
+        } else {
+          res.writeHead(404,headers);
+          
+          res.end("ERROR File does not exist");
+        }
+      })
+    } else {
+      res.write(random(validMessages).toString());
+      res.end();
+    }
   }
   
   if (req.method === 'OPTIONS') {
     res.end();
   }
+
+  next();
+
 };
 exports.validMessages = validMessages;
