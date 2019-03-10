@@ -20,30 +20,32 @@ module.exports.router = (req, res, next = ()=>{}) => {
   
 
   if (req.method === 'POST') {
-    var messageFromClient = "";
-    req.on('data', function(chunk) {
-      messageFromClient += chunk;
-    });
-    req.on('end', function () {
-      console.log('POSTed: ' + messageFromClient);
-      res.end(messageFromClient);
-    });
+    if(req.url === "/background") {
+      console.log('Backgrounded Uploaded to server');
+      res.end('Upload Successful');
+    } else {
+      var messageFromClient = "";
+      req.on('data', function(chunk) {
+        messageFromClient += chunk;
+      });
+      req.on('end', function () {
+        console.log('POSTed: ' + messageFromClient);
+        res.end(messageFromClient);
+      });
+    }
   }
 
   if (req.method === 'GET') {
     if(req.url === "/background") {
-      var filePath = path.join(__dirname, "/background.jpg");
-      fs.exists(filePath, function(exists) {
-        if(exists) {
-          res.writeHead(200, headers);
-          fs.createReadStream(filePath).pipe(res);
-          console.log('Yay')
-          
-          res.end();
-        } else {
+      var filePath = path.join(__dirname, "./background.jpg");
+      fs.readFile(filePath, function(error, content) {
+        if(error) {
           res.writeHead(404,headers);
-          
           res.end("ERROR File does not exist");
+        } else {
+          res.writeHead(200, headers);
+          console.log('Background Image Sent!')
+          res.end(content); 
         }
       })
     } else {
