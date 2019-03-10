@@ -15,7 +15,7 @@ var sendRequest = function(data, successCB, url = '', errorCB = null) {
 }
 
 $("#btnSubmit").on('click', (event) => {
-  event.preventDefault();
+  // event.preventDefault();
   var imageData = new FormData();
   var files = $("#fileUpload").get(0).files;
 

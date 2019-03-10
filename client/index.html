@@ -2,21 +2,24 @@
 
   <head>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300" rel="stylesheet">
   </head>
   <body>
-    <h1>A Synchronous Swim</h1>
     <div class="pool">
-      <div class="team">
-        <div class="swimmer">↜</div>
-        <div class="swimmer">↜</div>
-        <div class="swimmer">↜</div>
-        <div class="swimmer">↜</div>
+      <h1 class="title">A Synchronous Swim</h1>
+      <div class='container'>
+        <div class="team">
+          <div class="swimmer"></div>
+          <div class="swimmer"></div>
+          <div class="swimmer"></div>
+          <div class="swimmer"></div>
+        </div>
       </div>
+      <form id="frmUploader" enctype="multipart/form-data" >
+        <input type="file" name="imgUploader" multiple id="fileUpload" /> <br>
+        <input type="submit" name="submit" id="btnSubmit" value="Upload" /> 
+      </form>
     </div>
-    <form id="frmUploader" enctype="multipart/form-data" >
-      <input type="file" name="imgUploader" multiple id="fileUpload" /> <br>
-      <input type="submit" name="submit" id="btnSubmit" value="Upload" /> 
-    </form>
   </body>
   <script src="/node_modules/jquery/dist/jquery.js"></script>
   <script src="/node_modules/underscore/underscore.js"></script>

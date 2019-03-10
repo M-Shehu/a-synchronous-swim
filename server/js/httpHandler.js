@@ -5,7 +5,7 @@ const messageQueue = require('./messageQueue');
 const httpHandler = require('./httpHandler');
 const path = require('path');
 // Path for the background image ///////////////////////
-module.exports.backgroundImageFile = './background.jpg';
+module.exports.backgroundImageFile = './js/background.jpg';
 ////////////////////////////////////////////////////////
 var validMessages = ['left', 'right', 'up', 'down'];
 
@@ -21,6 +21,21 @@ module.exports.router = (req, res, next = ()=>{}) => {
 
   if (req.method === 'POST') {
     if(req.url === "/background") {
+      var imageFile = Buffer.alloc(0);
+      req.on('data', (chunk) => {
+        imageFile = Buffer.concat([imageFile, chunk]);
+      });
+      req.on('end', () => {
+        var file = multipart.getFile(imageFile);
+        fs.writeFile(module.exports.backgroundImageFile, file.data, (err) => {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log(imageFile);
+            console.log('File successfully saved!');
+          }
+        })
+      })
       console.log('Backgrounded Uploaded to server');
       res.end('Upload Successful');
     } else {
