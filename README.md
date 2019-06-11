@@ -1,2 +1,8 @@
-# a-synchronous-swim
-This is a project I completed as a student at [hackreactor](http://hackreactor.com). This project was worked on with a pair.
+# A-synchronous-swim
+
+## Project Description
+This is a repo to practice using Node.js as a server for connectivity.
+
+## License
+
+This app is MIT licensed.
